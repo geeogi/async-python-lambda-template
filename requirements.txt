@@ -1,0 +1,4 @@
+aiohttp
+aiobotocore
+pytest
+autopep8
