@@ -1,4 +1,6 @@
-aiohttp
 aiobotocore
-pytest
+aiohttp
 autopep8
+moto
+pytest
+responses
