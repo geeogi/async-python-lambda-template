@@ -73,14 +73,14 @@ def test_handler_fetches_from_http_and_writes_to_s3(_, __, mock_aiobotocore, cap
         Then HTTP calls have been made
         """
         expected_urls = ["https://www.bbc.co.uk/news",
-                "https://www.wsj.com/",
-                "https://www.ft.com/",
-                "https://uk.finance.yahoo.com/",
-                "https://www.coindesk.com/",
-                "https://api.coingecko.com/api/v3/exchange_rates",
-                "https://api.gemini.com/v1/pubticker/btcusd",
-                "https://api.blockchain.info/stats"]
-        
+                         "https://www.wsj.com/",
+                         "https://www.ft.com/",
+                         "https://uk.finance.yahoo.com/",
+                         "https://www.coindesk.com/",
+                         "https://api.coingecko.com/api/v3/exchange_rates",
+                         "https://api.gemini.com/v1/pubticker/btcusd",
+                         "https://api.blockchain.info/stats"]
+
         for url in expected_urls:
             assert ('GET', URL(url)) in mock_aioresponses.requests
 
