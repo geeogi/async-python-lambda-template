@@ -1,6 +1,5 @@
 aiobotocore
 aiohttp
+aioresponses
 autopep8
-moto
 pytest
-responses
