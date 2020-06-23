@@ -1,6 +1,7 @@
 {
   "python.pythonPath": "venv/bin/python3",
   "files.exclude": {
-    "**/__pycache__": true
+    "**/__pycache__": true,
+    ".pytest_cache": true
   }
 }
