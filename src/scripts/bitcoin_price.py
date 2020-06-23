@@ -5,6 +5,7 @@ from dataclasses import asdict
 from model.Price import Price
 from services.fetch import fetch_json
 from services.s3 import write_to_s3
+from services.time import current_time
 
 
 async def bitcoin_price(session, s3_client):
@@ -30,7 +31,7 @@ async def bitcoin_price(session, s3_client):
     ]
 
     prices_document = {
-        'last_updated': datetime.datetime.now().isoformat(),
+        'last_updated': current_time(),
         'prices': [asdict(price) for price in prices]
     }
 

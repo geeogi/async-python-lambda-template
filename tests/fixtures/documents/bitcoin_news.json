@@ -1,0 +1,25 @@
+{
+  "last_updated": "2020-01-01T00:00:00.000",
+  "news": [
+    {
+      "source": "bbc",
+      "is_featured": false
+    },
+    {
+      "source": "wsj",
+      "is_featured": false
+    },
+    {
+      "source": "ft",
+      "is_featured": false
+    },
+    {
+      "source": "yahoo",
+      "is_featured": true
+    },
+    {
+      "source": "coindesk",
+      "is_featured": true
+    }
+  ]
+}

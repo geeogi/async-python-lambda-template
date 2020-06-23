@@ -1,10 +1,10 @@
 import asyncio
-import datetime
 from dataclasses import asdict
 
 from model.News import News
 from services.fetch import fetch_text
 from services.s3 import write_to_s3
+from services.time import current_time
 
 
 async def bitcoin_news(session, s3_client):
@@ -40,7 +40,7 @@ async def bitcoin_news(session, s3_client):
     ]
 
     news_document = {
-        'last_updated': datetime.datetime.now().isoformat(),
+        'last_updated': current_time(),
         'news': [asdict(news_source) for news_source in news_sources]
     }
 

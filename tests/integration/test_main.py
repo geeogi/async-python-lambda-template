@@ -1,5 +1,5 @@
 import json
-from unittest.mock import patch
+from unittest.mock import call, patch
 
 import boto3
 import responses
@@ -9,13 +9,20 @@ from moto import mock_s3
 from main import handler
 
 
+def load_json_fixture(path):
+    json_string = open(path).read()
+    return json.dumps(json.loads(json_string))
+
+
 @aioresponses()
 @patch("main.aiobotocore")
+@patch("scripts.bitcoin_news.current_time", return_value="2020-01-01T00:00:00.000")
+@patch("scripts.bitcoin_price.current_time", return_value="2020-01-01T00:00:00.000")
 def test_handler(*mocks):
-    mock_aioresponses, mock_aiobotocore = mocks
-    
+    mock_aioresponses, _, _, mock_aiobotocore = mocks
+
     """
-    Mock responses for news endpoints 
+    Mock responses for news endpoints
     """
     mock_aioresponses.get(
         "https://www.bbc.co.uk/news",
@@ -44,7 +51,7 @@ def test_handler(*mocks):
     )
 
     """
-    Mock responses for price endpoints 
+    Mock responses for price endpoints
     """
     mock_aioresponses.get(
         "https://api.coingecko.com/api/v3/exchange_rates",
@@ -68,11 +75,28 @@ def test_handler(*mocks):
     handler(None, None)
 
     """
-    Validate 
+    Assert S3 put_object called
     """
     mock_session = mock_aiobotocore.get_session.return_value
     mock_context_manager = mock_session.create_client.return_value
     mock_client = mock_context_manager.__aenter__.return_value
     mock_put_object = mock_client.put_object
 
-    assert len(mock_put_object.mock_calls) == 2
+  
+    assert call(
+        ACL='public-read',
+        Body=load_json_fixture("./tests/fixtures/documents/bitcoin_price.json"),
+        Bucket='api.my-bucket.com',
+        ContentDisposition='inline',
+        ContentType='application/json',
+        Key='bitcoin_price.json',
+    ) in mock_put_object.mock_calls
+
+    assert call(
+        ACL='public-read',
+        Body=load_json_fixture("./tests/fixtures/documents/bitcoin_news.json"),
+        Bucket='api.my-bucket.com',
+        ContentDisposition='inline',
+        ContentType='application/json',
+        Key='bitcoin_news.json',
+    ) in mock_put_object.mock_calls

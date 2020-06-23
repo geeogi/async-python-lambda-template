@@ -1,0 +1,17 @@
+{
+  "last_updated": "2020-01-01T00:00:00.000",
+  "prices": [
+    {
+      "source": "coingecko",
+      "price": 9592.789
+    },
+    {
+      "source": "gemini",
+      "price": "9588.67"
+    },
+    {
+      "source": "blockchain",
+      "price": 9481.0
+    }
+  ]
+}
