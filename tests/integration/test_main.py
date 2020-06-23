@@ -11,7 +11,9 @@ from main import handler
 
 def load_json_fixture(path):
     json_string = open(path).read()
-    return json.dumps(json.loads(json_string))
+    json_dict = json.loads(json_string)
+    json_string_with_formatting_removed = json.dumps(json_dict)
+    return json_string_with_formatting_removed
 
 
 @aioresponses()
