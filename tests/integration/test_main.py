@@ -2,9 +2,7 @@ from unittest.mock import call, patch
 
 import boto3
 import pytest
-import responses
 from aioresponses import aioresponses
-from moto import mock_s3
 from yarl import URL
 
 from main import handler

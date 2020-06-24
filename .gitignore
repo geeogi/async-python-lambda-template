@@ -2,3 +2,5 @@ venv
 .vscode/.ropeproject
 *.pyc
 .pytest_cache
+dist
+dist.zip
