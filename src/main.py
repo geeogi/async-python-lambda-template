@@ -8,7 +8,7 @@ from scripts.bitcoin_news import bitcoin_news
 from scripts.bitcoin_price import bitcoin_price
 
 
-async def scraper():
+async def main():
     async with aiobotocore.get_session().create_client('s3', region_name='eu-west-2') as s3_client:
         async with aiohttp.ClientSession() as session:
             coroutines = [
@@ -29,4 +29,4 @@ async def scraper():
 
 
 def handler(event, context):
-    asyncio.run(scraper())
+    asyncio.run(main())
