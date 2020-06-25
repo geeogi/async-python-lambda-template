@@ -1,6 +1,5 @@
 from unittest.mock import call, patch
 
-import boto3
 import pytest
 from aioresponses import aioresponses
 from yarl import URL
