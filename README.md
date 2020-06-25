@@ -1,6 +1,6 @@
-# AWS lambda with asynchronous Python using asyncio, aiohttp and aiobotocore 
+# High-performance AWS lambda with asynchronous Python  
 
-A template for building a high-performance Python function in AWS lambda. 
+A template for building a high-performance Python function in AWS lambda using asyncio, aiohttp and aiobotocore. 
 
 ## Overview
 
