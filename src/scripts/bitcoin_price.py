@@ -1,5 +1,4 @@
 import asyncio
-import datetime
 from dataclasses import asdict
 
 from model.Price import Price
@@ -22,7 +21,7 @@ async def bitcoin_price(session, s3_client):
         ),
         Price(
             source="gemini",
-            price=gemini["last"]
+            price=float(gemini["last"])
         ),
         Price(
             source="blockchain",
