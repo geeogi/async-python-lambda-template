@@ -118,7 +118,7 @@ def test_handler_fetches_from_http_and_writes_to_s3(_, __, mock_aiobotocore, cap
 @patch("main.aiobotocore")
 @patch("scripts.bitcoin_news.current_time", return_value="2020-01-01T00:00:00.000")
 @patch("scripts.bitcoin_price.current_time", return_value="2020-01-01T00:00:00.000")
-def test_handler_raises_global_error_for_bad_request_after_all_scripts_completed(_, __, mock_aiobotocore, capsys):
+def test_handler_raises_global_exception_for_bad_request_after_all_scripts_completed(_, __, mock_aiobotocore, capsys):
     with aioresponses() as mock_aioresponses:
         """
         Given some news endpoints return 500
