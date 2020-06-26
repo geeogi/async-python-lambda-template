@@ -1,6 +1,6 @@
 import json
 
-S3_BUCKET = "api.my-bucket.com"
+S3_BUCKET = "my-first-s3-bucket"
 
 
 async def write_to_s3(new_file: dict, file_name: str, client) -> None:
