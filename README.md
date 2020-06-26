@@ -47,7 +47,7 @@ You can run the debugger in VS Code by setting a breakpoint and running the `Pyt
 
 ## Deployment
 
-Provision a new lambda component on AWS using the [AWS console](https://docs.aws.amazon.com/lambda/latest/dg/getting-started-create-function.html) or via [CloudFormation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-function.html) template. 
+Provision a new lambda component on AWS using the [AWS console](https://docs.aws.amazon.com/lambda/latest/dg/getting-started-create-function.html) or via [CloudFormation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-function.html) template. You'll also need to create an S3 bucket...  
 
 In order to deploy this project to your AWS lambda component you'll need to zip the contents of the `src/` directory and include any 3rd party Python modules required in production. Run:
 
