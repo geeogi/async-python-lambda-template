@@ -9,32 +9,46 @@
           "ZipFile": { "Fn::Join": ["\n", ["def handler(event, context):", "pass"]] }
         },
         "Runtime": "python3.7",
-        "Timeout": 5
+        "Timeout": 5,
+        "Role": {
+          "Fn::GetAtt": ["PythonLambdaRole", "Arn"]
+        }
       }
     },
     "PythonLambdaS3Bucket": {
       "Type": "AWS::S3::Bucket",
-      "DeletionPolicy": "Retain",
-      "Properties": {
-        "BucketName": "PythonLambdaS3Bucket"
-      }
+      "DeletionPolicy": "Retain"
     },
-    "PythonLambdaS3BucketPolicy": {
-      "Type": "AWS::S3::BucketPolicy",
+    "PythonLambdaRole": {
+      "Type": "AWS::IAM::Role",
       "Properties": {
-        "Bucket": { "Ref": "PythonLambdaS3Bucket" },
-        "PolicyDocument": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
           "Statement": [
             {
-              "Action": ["s3:PutObject"],
               "Effect": "Allow",
-              "Resource": { "Fn::Join": ["", ["arn:aws:s3:::", { "Ref": "PythonLambdaS3Bucket" }, "/*"]] },
               "Principal": {
-                "Fn::GetAtt": ["PythonLambda", "Arn"]
-              }
+                "Service": ["lambda.amazonaws.com"]
+              },
+              "Action": ["sts:AssumeRole"]
             }
           ]
-        }
+        },
+        "Policies": [
+          {
+            "PolicyName": "PythonLambdaRolePolicy",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Action": ["s3:PutObject"],
+                  "Effect": "Allow",
+                  "Resource": { "Fn::Join": ["", ["arn:aws:s3:::", { "Ref": "PythonLambdaS3Bucket" }, "/*"]] }
+                }
+              ]
+            }
+          }
+        ]
       }
     }
   }

@@ -92,7 +92,7 @@ def test_handler_fetches_from_http_and_writes_to_s3(_, __, mock_aiobotocore, cap
         assert call(
             ACL='public-read',
             Body=json_fixture("documents/bitcoin_price.json"),
-            Bucket='PythonLambdaS3Bucket',
+            Bucket='python-lambda-s3-bucket',
             ContentDisposition='inline',
             ContentType='application/json',
             Key='bitcoin_price.json',
@@ -101,7 +101,7 @@ def test_handler_fetches_from_http_and_writes_to_s3(_, __, mock_aiobotocore, cap
         assert call(
             ACL='public-read',
             Body=json_fixture("documents/bitcoin_news.json"),
-            Bucket='PythonLambdaS3Bucket',
+            Bucket='python-lambda-s3-bucket',
             ContentDisposition='inline',
             ContentType='application/json',
             Key='bitcoin_news.json',
