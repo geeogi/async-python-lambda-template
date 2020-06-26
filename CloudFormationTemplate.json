@@ -1,7 +1,7 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
   "Resources": {
-    "MyExampleLambda": {
+    "PythonLambda": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Handler": "dist/main.handler",
@@ -12,25 +12,25 @@
         "Timeout": 5
       }
     },
-    "MyExampleBucket": {
+    "PythonLambdaS3Bucket": {
       "Type": "AWS::S3::Bucket",
       "DeletionPolicy": "Retain",
       "Properties": {
-        "BucketName": "MyExampleBucket"
+        "BucketName": "PythonLambdaS3Bucket"
       }
     },
-    "MyExampleBucketPolicy": {
+    "PythonLambdaS3BucketPolicy": {
       "Type": "AWS::S3::BucketPolicy",
       "Properties": {
-        "Bucket": { "Ref": "MyExampleBucket" },
+        "Bucket": { "Ref": "PythonLambdaS3Bucket" },
         "PolicyDocument": {
           "Statement": [
             {
               "Action": ["s3:PutObject"],
               "Effect": "Allow",
-              "Resource": { "Fn::Join": ["", ["arn:aws:s3:::", { "Ref": "MyExampleBucket" }, "/*"]] },
+              "Resource": { "Fn::Join": ["", ["arn:aws:s3:::", { "Ref": "PythonLambdaS3Bucket" }, "/*"]] },
               "Principal": {
-                "Fn::GetAtt": ["MyExampleLambda", "Arn"]
+                "Fn::GetAtt": ["PythonLambda", "Arn"]
               }
             }
           ]

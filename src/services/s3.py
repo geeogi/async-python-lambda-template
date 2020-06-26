@@ -1,6 +1,6 @@
 import json
 
-S3_BUCKET = "my-first-s3-bucket"
+S3_BUCKET = "PythonLambdaS3Bucket"
 
 
 async def write_to_s3(new_file: dict, file_name: str, client) -> None:
