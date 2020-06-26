@@ -1,0 +1,41 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Resources": {
+    "MyExampleLambda": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Handler": "dist/main.handler",
+        "Code": {
+          "ZipFile": { "Fn::Join": ["\n", ["def handler(event, context):", "pass"]] }
+        },
+        "Runtime": "python3.7",
+        "Timeout": 5
+      }
+    },
+    "MyExampleBucket": {
+      "Type": "AWS::S3::Bucket",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "BucketName": "MyExampleBucket"
+      }
+    },
+    "MyExampleBucketPolicy": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": { "Ref": "MyExampleBucket" },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": ["s3:PutObject"],
+              "Effect": "Allow",
+              "Resource": { "Fn::Join": ["", ["arn:aws:s3:::", { "Ref": "MyExampleBucket" }, "/*"]] },
+              "Principal": {
+                "Fn::GetAtt": ["MyExampleLambda", "Arn"]
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}
