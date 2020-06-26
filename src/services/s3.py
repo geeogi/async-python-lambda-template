@@ -10,7 +10,6 @@ async def write_to_s3(new_file: dict, file_name: str, client) -> None:
         Bucket=S3_BUCKET,
         Key=key,
         Body=json.dumps(new_file),
-        ACL="public-read",
         ContentType="application/json",
         ContentDisposition="inline"
     )
