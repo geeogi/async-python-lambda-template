@@ -1,29 +1,10 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
   "Resources": {
-    "PythonLambda": {
-      "Type": "AWS::Lambda::Function",
-      "Properties": {
-        "Handler": "dist/main.handler",
-        "Code": {
-          "ZipFile": { "Fn::Join": ["\n", ["def handler(event, context):", "pass"]] }
-        },
-        "Runtime": "python3.7",
-        "Timeout": 5,
-        "Role": {
-          "Fn::GetAtt": ["PythonLambdaRole", "Arn"]
-        }
-      }
-    },
-    "PythonLambdaS3Bucket": {
-      "Type": "AWS::S3::Bucket",
-      "DeletionPolicy": "Retain"
-    },
     "PythonLambdaRole": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
-          "Version": "2012-10-17",
           "Statement": [
             {
               "Effect": "Allow",
@@ -38,17 +19,54 @@
           {
             "PolicyName": "PythonLambdaRolePolicy",
             "PolicyDocument": {
-              "Version": "2012-10-17",
               "Statement": [
                 {
-                  "Action": ["s3:PutObject"],
                   "Effect": "Allow",
-                  "Resource": { "Fn::Join": ["", ["arn:aws:s3:::", { "Ref": "PythonLambdaS3Bucket" }, "/*"]] }
+                  "Action": ["logs:CreateLogGroup", "logs:CreateLogStream", "logs:PutLogEvents"],
+                  "Resource": "*"
                 }
               ]
             }
           }
         ]
+      }
+    },
+    "PythonLambdaS3Bucket": {
+      "Type": "AWS::S3::Bucket",
+      "DeletionPolicy": "Delete"
+    },
+    "PythonLambda": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Handler": "handler.handler",
+        "Code": {
+          "ZipFile": { "Fn::Join": ["\n", ["def handler(event, context):", "pass"]] }
+        },
+        "Runtime": "python3.7",
+        "Timeout": 5,
+        "Role": {
+          "Fn::GetAtt": ["PythonLambdaRole", "Arn"]
+        }
+      }
+    },
+    "PythonLambdaS3BucketPolicy": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": { "Ref": "PythonLambdaS3Bucket" },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": "s3:*",
+              "Principal": {
+                "AWS": { "Fn::GetAtt": ["PythonLambdaRole", "Arn"] }
+              },
+              "Resource": {
+                "Fn::Join": ["", ["arn:aws:s3:::", { "Ref": "PythonLambdaS3Bucket" }, "/*"]]
+              }
+            }
+          ]
+        }
       }
     }
   }
