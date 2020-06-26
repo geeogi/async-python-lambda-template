@@ -10,7 +10,8 @@ package:
 	mkdir dist
 	pip install -r requirements-prod.txt -t dist
 	cp -r src/ dist/
-	zip -r dist.zip dist
+	(cd dist && zip -r ../dist.zip .)
+
 
 all:
 	make clean verify package	
