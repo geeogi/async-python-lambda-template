@@ -13,3 +13,4 @@ Mock AWS credentials during tests
 os.environ["AWS_ACCESS_KEY_ID"] = "MOCK_ID"
 os.environ["AWS_SECRET_ACCESS_KEY"] = "MOCK_KEY"
 os.environ["AWS_DEFAULT_REGION"] = "eu-west-1"
+os.environ["BUCKET_NAME"] = "mock-bucket-name"

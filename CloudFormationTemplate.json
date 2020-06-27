@@ -1,6 +1,10 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
   "Resources": {
+    "PythonLambdaS3Bucket": {
+      "Type": "AWS::S3::Bucket",
+      "DeletionPolicy": "Delete"
+    },
     "PythonLambdaRole": {
       "Type": "AWS::IAM::Role",
       "Properties": {
@@ -22,6 +26,13 @@
               "Statement": [
                 {
                   "Effect": "Allow",
+                  "Action": "s3:*",
+                  "Resource": {
+                    "Fn::Join": ["", ["arn:aws:s3:::", { "Ref": "PythonLambdaS3Bucket" }, "/*"]]
+                  }
+                },
+                {
+                  "Effect": "Allow",
                   "Action": ["logs:CreateLogGroup", "logs:CreateLogStream", "logs:PutLogEvents"],
                   "Resource": "*"
                 }
@@ -31,10 +42,6 @@
         ]
       }
     },
-    "PythonLambdaS3Bucket": {
-      "Type": "AWS::S3::Bucket",
-      "DeletionPolicy": "Delete"
-    },
     "PythonLambda": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
@@ -42,30 +49,13 @@
         "Code": {
           "ZipFile": { "Fn::Join": ["\n", ["def handler(event, context):", "pass"]] }
         },
+        "Environment": {
+          "Variables": { "BUCKET_NAME": { "Ref": "PythonLambdaS3Bucket" } }
+        },
         "Runtime": "python3.7",
         "Timeout": 5,
         "Role": {
           "Fn::GetAtt": ["PythonLambdaRole", "Arn"]
-        }
-      }
-    },
-    "PythonLambdaS3BucketPolicy": {
-      "Type": "AWS::S3::BucketPolicy",
-      "Properties": {
-        "Bucket": { "Ref": "PythonLambdaS3Bucket" },
-        "PolicyDocument": {
-          "Statement": [
-            {
-              "Effect": "Allow",
-              "Action": "s3:*",
-              "Principal": {
-                "AWS": { "Fn::GetAtt": ["PythonLambdaRole", "Arn"] }
-              },
-              "Resource": {
-                "Fn::Join": ["", ["arn:aws:s3:::", { "Ref": "PythonLambdaS3Bucket" }, "/*"]]
-              }
-            }
-          ]
         }
       }
     }

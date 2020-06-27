@@ -1,6 +1,7 @@
 import json
+import os
 
-S3_BUCKET = "python-lambda-s3-bucket"
+S3_BUCKET = os.environ["BUCKET_NAME"]
 
 
 async def write_to_s3(new_file: dict, file_name: str, client) -> None:
