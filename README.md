@@ -18,7 +18,7 @@ This repository also includes a CloudFormation template which can be used to dep
 
 ## Setup
 
-Clone this repository and install [Python 3.7+](https://www.python.org/downloads/). Then, create an isolated Python environment at the root of the project using virtualenv:
+Clone this repository and install [Python 3.8+](https://www.python.org/downloads/). Then, create an isolated Python environment at the root of the project using virtualenv:
 
 ```
 python3 -m venv venv
@@ -57,6 +57,8 @@ You can run the debugger in VS Code by setting a breakpoint and running the `Pyt
 
 To provision the lambda and S3 infrastructure on AWS you'll need to visit the CloudFormation service in the AWS console and upload the stack template declared in [template.json](template.json). This will create a lambda component and S3 bucket with appropriate IAM policies.
 
+> The lambda will be configured to run Python 3.7 since it's not yet possible to deploy Python 3.8+ via CloudFormation using the ZipFile property. If you need Python 3.8+ you can update your lambda through the AWS console after it's been created or configure the lambda's Runtime and Code properties in the CloudFormation template using an S3 bucket. 
+
 ## Deployment
 
 To deploy the source code to the lambda component you'll need to zip the contents of the `src/` directory and include any 3rd party Python modules required in production. Run:
@@ -71,22 +73,26 @@ This will make a fresh install of the production requirements into a `dist/` dir
 
 ## Error handling 
 
-The main lambda handler in [src/index.py](src/index.py) demonstrates how to run any number of asynchronous scripts concurrently while handling exceptions gracefully. If an exception occurs within an individual script then a global exception will be raised only after all other scripts have completed. A detailed traceback is logged for debugging purposes.
+The main lambda handler in [src/index.py](src/index.py) demonstrates how to run any number of scripts concurrently while handling exceptions gracefully. If an exception occurs within an individual script then a global exception will be raised only after all other scripts have completed. A detailed traceback is logged for debugging purposes.
+
+## Invoke the lambda
+
+The simplest way to invoke a lambda function is by creating and [firing a test event using the AWS console](https://docs.aws.amazon.com/lambda/latest/dg/getting-started-create-function.html#get-started-invoke-manually). You can also, for example, configure [CloudWatch Events](https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/RunLambdaSchedule.html) to trigger your lambda on a schedule (e.g. every 5 mins) or configure [API Gateway](https://docs.aws.amazon.com/lambda/latest/dg/services-apigateway.html) to trigger it by HTTP request. 
 
 ## Q&A
 
 #### Why use asynchronous Python? 
 
-Asynchronous Python can speed up the execution time of a program by performing I/O concurrently. While a single threaded synchronous program will perform network requests one by one, an asynchronous program is able to handle multiple network requests at a time which can have a significant performance benefit when a large number of requests are made e.g. a data scraper/aggregator service. 
+Async Python code can speed up the execution time of a script by performing I/O concurrently. While a synchronous Python script will perform network requests one by one, an asynchronous Python script is able to handle multiple network requests at a time which can have a significant benefit when a large number of requests are made. 
 
-A similar effect can be achieved with synchronous code using a multi threaded approach but the concurrent pattern with asyncio is often preferred because it makes it easier to reason about the state of our runtime thanks to the explicit async/await syntax. 
+A similar effect can be achieved with synchronous code using multithreading but the concurrent pattern with asyncio is often easier to understand and reason about, thanks to the explicit async/await syntax. 
 
-Be aware that if your program does not require significant I/O then the traditional synchronous pattern will probably be quicker than the asynchronous pattern. 
+If your script does not perform significant I/O then there won't be any benefit from using asynchronous code. 
 
 #### Why use AWS lambda?
 
 AWS lambda is a software environment that lets you run code without having to provision or manage your own server. To develop a lambda you only need to implement a function (the handler) to be called when the lambda is invoked.
 
-Lambdas are connected to the AWS ecosystem and can be configured to run on a schedule or be triggered by a REST API call or by another AWS event such as SNS message or S3 upload. Lambda comes with a simple interface for monitoring performance and editing the function code on the fly.
+Lambdas are connected to the AWS ecosystem and can be configured to run on a schedule or be triggered by HTTP request or by another AWS event such as SNS message or S3 upload. Lambda comes with an interface for monitoring performance and editing the function code on the fly.
 
 With AWS Lambda you only pay for the execution time you consume so if your code is fast and efficient then it can often be cheaper to run than a traditional server instance.
