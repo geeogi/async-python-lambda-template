@@ -45,7 +45,7 @@
     "PythonLambda": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
-        "Handler": "handler.handler",
+        "Handler": "index.handler",
         "Code": {
           "ZipFile": { "Fn::Join": ["\n", ["def handler(event, context):", "pass"]] }
         },

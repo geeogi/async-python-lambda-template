@@ -4,11 +4,11 @@ import pytest
 from aioresponses import aioresponses
 from yarl import URL
 
-from handler import handler
+from index import handler
 from tests.fixtures.utils import json_fixture, string_fixture
 
 
-@patch("handler.aiobotocore")
+@patch("index.aiobotocore")
 @patch("scripts.bitcoin_news.current_time", return_value="2020-01-01T00:00:00.000")
 @patch("scripts.bitcoin_price.current_time", return_value="2020-01-01T00:00:00.000")
 def test_handler_fetches_from_http_and_writes_to_s3(_, __, mock_aiobotocore, capsys):
@@ -113,7 +113,7 @@ def test_handler_fetches_from_http_and_writes_to_s3(_, __, mock_aiobotocore, cap
         assert "bitcoin_news written." in log
 
 
-@patch("handler.aiobotocore")
+@patch("index.aiobotocore")
 @patch("scripts.bitcoin_news.current_time", return_value="2020-01-01T00:00:00.000")
 @patch("scripts.bitcoin_price.current_time", return_value="2020-01-01T00:00:00.000")
 def test_handler_raises_global_exception_for_bad_request_after_all_scripts_completed(_, __, mock_aiobotocore, capsys):
