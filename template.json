@@ -1,11 +1,11 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
   "Resources": {
-    "PythonLambdaS3Bucket": {
+    "DocumentBucket": {
       "Type": "AWS::S3::Bucket",
       "DeletionPolicy": "Delete"
     },
-    "PythonLambdaRole": {
+    "DataScraperRole": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -21,14 +21,14 @@
         },
         "Policies": [
           {
-            "PolicyName": "PythonLambdaRolePolicy",
+            "PolicyName": "DataScraperRolePolicy",
             "PolicyDocument": {
               "Statement": [
                 {
                   "Effect": "Allow",
                   "Action": "s3:*",
                   "Resource": {
-                    "Fn::Join": ["", ["arn:aws:s3:::", { "Ref": "PythonLambdaS3Bucket" }, "/*"]]
+                    "Fn::Join": ["", ["arn:aws:s3:::", { "Ref": "DocumentBucket" }, "/*"]]
                   }
                 },
                 {
@@ -42,7 +42,7 @@
         ]
       }
     },
-    "PythonLambda": {
+    "DataScraper": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Handler": "index.handler",
@@ -50,12 +50,13 @@
           "ZipFile": { "Fn::Join": ["\n", ["def handler(event, context):", "pass"]] }
         },
         "Environment": {
-          "Variables": { "BUCKET_NAME": { "Ref": "PythonLambdaS3Bucket" } }
+          "Variables": { "BUCKET_NAME": { "Ref": "DocumentBucket" } }
         },
         "Runtime": "python3.7",
         "Timeout": 5,
+        "MemorySize": 512,
         "Role": {
-          "Fn::GetAtt": ["PythonLambdaRole", "Arn"]
+          "Fn::GetAtt": ["DataScraperRole", "Arn"]
         }
       }
     }
