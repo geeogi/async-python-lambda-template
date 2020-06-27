@@ -7,11 +7,9 @@ verify:
 	python -m pytest	
 
 package:
-	mkdir dist
-	pip install -r requirements-prod.txt -t dist
 	cp -r src/ dist/
+	pip install -r requirements-prod.txt -t dist
 	(cd dist && zip -r ../dist.zip .)
-
 
 all:
 	make clean verify package	
