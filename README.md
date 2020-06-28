@@ -103,7 +103,7 @@ With AWS Lambda you only pay for the execution time you consume so if your code 
 
 ## Credit
 
-This template is based on production services built for [covidlive.co.uk](covidlive.co.uk) by @leofdgit and @geeogi.
+This template is based on production services built for [covidlive.co.uk](https://www.covidlive.co.uk) by @leofdgit and @geeogi.
 
 ## Contributing
 
