@@ -45,7 +45,7 @@ The Python modules will be installed inside a local `site-packages` directory ma
 
 ## Develop
 
-Update the existing scripts or add additional scripts to fit your requirements. Use the aiohttp and aiobotocore clients to perform concurrent I/O with `asyncio.gather`, `asyncio.as_completed` and async/await syntax. 
+Keep the existing scripts, update them or add additional scripts – it's up to you.
 
 ## Run the tests
 
@@ -61,7 +61,7 @@ You can run the debugger in VS Code by setting a breakpoint and running the `Pyt
 
 To provision the lambda and S3 infrastructure on AWS you'll need to visit the CloudFormation service in the AWS console and upload the stack template declared in [template.json](template.json). This will create a lambda component and S3 bucket with appropriate IAM policies.
 
-> The lambda is configured to run Python 3.7 since it's not yet possible to deploy Python 3.8+ via CloudFormation using the ZipFile property. If you need Python 3.8+ you can update your lambda through the AWS console after it's been created or reconfigure the lambda's Runtime and Code properties in the CloudFormation template. 
+> The lambda will be configured to run Python 3.7 since it's not yet possible to deploy Python 3.8+ via CloudFormation using the ZipFile property. If you need Python 3.8+ you can update your lambda through the AWS console after it's been created or reconfigure the lambda's Runtime and Code properties in the CloudFormation template. 
 
 ## Deployment
 
@@ -87,11 +87,11 @@ The simplest way to invoke a lambda function is by creating and [firing a test e
 
 #### Why use asynchronous Python? 
 
-Async Python code can speed up the execution time of a script by performing I/O concurrently. While a synchronous Python script will perform network requests one by one, an asynchronous Python script is able to handle multiple network requests at a time which can have a significant benefit when many requests are made. 
+Async Python code can speed up the execution time of a script by performing I/O concurrently. While a synchronous Python script will perform network requests one by one, an asynchronous Python script is able to handle multiple network requests at a time which can have a significant benefit when many requests are made – e.g. a data scraping/aggregating service. 
 
-A similar effect can be achieved with synchronous code using multithreading but the concurrent pattern with asyncio is often easier to understand and reason about, thanks to the explicit async/await syntax. 
+A similar effect can be achieved with synchronous Python using multithreading but the concurrent pattern with asyncio is often easier to understand and reason about, thanks to the explicit async/await syntax. 
 
-If your script does not perform significant I/O then there likely won't be any benefit from using asynchronous code. 
+If your script doesn't perform significant I/O then there likely won't be any benefit from using asynchronous code. 
 
 #### Why use AWS lambda?
 
@@ -100,6 +100,10 @@ AWS lambda is a software environment that lets you run code without having to pr
 Lambdas are connected to the AWS ecosystem and can be configured to run on a schedule or be triggered by HTTP request or by another AWS event such as SNS message or S3 upload. Lambda comes with an interface for monitoring performance and editing the function code on the fly.
 
 With AWS Lambda you only pay for the execution time you consume so if your code is fast and efficient then it can often be cheaper to run than a traditional server instance.
+
+## Credit
+
+...
 
 ## Contributing
 
