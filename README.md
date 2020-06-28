@@ -1,10 +1,10 @@
 # High-performance AWS lambda with async Python 
 
-_A template for building a high-performance Python function in AWS lambda using asyncio, aiohttp and aiobotocore. Perfect for a data processing pipeline._ 
+_A template for building a Python function in AWS lambda using asyncio, aiohttp and aiobotocore. Perfect for a data processing pipeline._ 
 
 ## Features
 
-- High-performance async Python 
+- Asynchronous Python with fast and cheap execution time
 - Runs in AWS lambda serverless environment λ 
 - Integration tests with HTTP and AWS mocks
 - CloudFormation template for AWS infrastructure deployment 
@@ -43,9 +43,13 @@ pip -r install requirements-prod.txt
 
 The Python modules will be installed inside a local `site-packages` directory maintained by the virtual environment. This will help to keep the project isolated from other Python projects on your machine.
 
+## Develop
+
+Update the existing scripts or add additional scripts to fit your requirements. Use the aiohttp and aiobotocore clients to perform concurrent I/O with `asyncio.gather`, `asyncio.as_completed` and async/await syntax. 
+
 ## Run the tests
 
-This project uses `pytest` to run a suite of integration tests which are designed to run as much application code as possible while mocking the external HTTP and AWS calls. The tests use [aioresponses](https://github.com/pnuckowski/aioresponses) to mock async HTTP requests and the builtin module `unittest` to patch the aiobotocore module. Run the tests:
+This project uses `pytest` to run a suite of integration tests which are designed to run as much application code as possible while mocking the external HTTP and AWS calls. The tests use [aioresponses](https://github.com/pnuckowski/aioresponses) to mock async HTTP requests and [unittest.mock](https://docs.python.org/3/library/unittest.mock.html) to patch the aiobotocore module. Run the tests:
 
 ```
 pytest
@@ -57,7 +61,7 @@ You can run the debugger in VS Code by setting a breakpoint and running the `Pyt
 
 To provision the lambda and S3 infrastructure on AWS you'll need to visit the CloudFormation service in the AWS console and upload the stack template declared in [template.json](template.json). This will create a lambda component and S3 bucket with appropriate IAM policies.
 
-> The lambda will be configured to run Python 3.7 since it's not yet possible to deploy Python 3.8+ via CloudFormation using the ZipFile property. If you need Python 3.8+ you can update your lambda through the AWS console after it's been created or configure the lambda's Runtime and Code properties in the CloudFormation template using an S3 bucket. 
+> The lambda is configured to run Python 3.7 since it's not yet possible to deploy Python 3.8+ via CloudFormation using the ZipFile property. If you need Python 3.8+ you can update your lambda through the AWS console after it's been created or reconfigure the lambda's Runtime and Code properties in the CloudFormation template. 
 
 ## Deployment
 
@@ -73,7 +77,7 @@ This will make a fresh install of the production requirements into a `dist/` dir
 
 ## Error handling 
 
-The main lambda handler in [src/index.py](src/index.py) demonstrates how to run any number of scripts concurrently while handling exceptions gracefully. If an exception occurs within an individual script then a global exception will be raised only after all other scripts have completed. A detailed traceback is logged for debugging purposes.
+The main lambda handler in [src/index.py](src/index.py) demonstrates how to run any number of scripts concurrently while handling exceptions. If an exception occurs within an individual script then a global exception will be raised only after all other scripts have completed and a detailed traceback is logged for debugging purposes.
 
 ## Invoke the lambda
 
