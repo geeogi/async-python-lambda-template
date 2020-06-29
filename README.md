@@ -89,7 +89,7 @@ The simplest way to invoke a lambda function is by creating and [firing a test e
 
 Async Python code can speed up the execution time of a script by performing I/O concurrently. While a synchronous Python script will perform network requests one by one, an asynchronous Python script is able to handle multiple network requests at a time which can have a significant benefit when many requests are made – e.g. a data scraping/aggregating service. 
 
-A similar effect can be achieved with synchronous Python using multithreading but the concurrent pattern with asyncio is often easier to understand and reason about, thanks to the explicit async/await syntax. 
+A similar effect can be achieved using multithreading but the concurrent pattern with asyncio is often easier to understand and reason about, especially with the explicit async/await syntax. 
 
 If your script doesn't perform significant I/O then there likely won't be any benefit from using asynchronous code. 
 
@@ -103,7 +103,7 @@ With AWS Lambda you only pay for the execution time you consume so if your code 
 
 ## Credit
 
-This template is based on production services built for [covidlive.co.uk](https://www.covidlive.co.uk) by @leofdgit and @geeogi.
+This template is based on production services built for [covidlive.co.uk](https://www.covidlive.co.uk) by [@lfalcomerdawson](https://twitter.com/lfalcomerdawson) and [@geeogi](https://twitter.com/geeogi).
 
 ## Contributing
 
