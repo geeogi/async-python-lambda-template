@@ -1,10 +1,10 @@
 clean:
 	find . -type f -name '*.py[co]' -delete -o -type d -name __pycache__ -delete
 	rm -rf dist
-	rm -rf dist.zip
+	rm dist.zip
 
 verify:
-	python -m pytest	
+	pytest	
 
 package:
 	cp -r src/ dist/
