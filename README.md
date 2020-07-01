@@ -16,7 +16,7 @@ This template demonstrates how to build and test a lambda function which runs HT
 
 ## Should I use this template?
 
-This template is a good fit for any service that makes many HTTP requests or performs many AWS actions (e.g. S3, DynamoDB) such as a data scraping service or an aggregating service that needs to fetch or update many documents at a time. This template offers a quick-start with production ready and tested code. [Learn more](#qa).
+This template is a good fit for a service that makes many HTTP requests or performs many AWS actions (e.g. S3, DynamoDB) such as a data scraping service or an aggregating service that needs to fetch or update many documents at a time. This template offers a quick-start with production ready and tested code. [Learn more](#qa).
 
 ## Setup
 
@@ -89,7 +89,7 @@ The simplest way to invoke a lambda function is by creating and [firing a test e
 
 #### Why use Asyncio? 
 
-Asyncio can speed up the execution time of a script by performing I/O concurrently. While a synchronous Python script will perform I/O tasks (e.g. network requests) one by one, a Python script written with asyncio can handle multiple I/O tasks at a time which can have a significant benefit when many I/O tasks are required. We could use multithreading to achieve a similar effect. Instead, this template uses asyncio with explicit async/await syntax. 
+Asyncio can speed up the execution time of a script by performing I/O concurrently. While a synchronous Python script will perform I/O tasks (e.g. network requests) one by one, a Python script written with asyncio can handle multiple I/O tasks at a time which can have a significant benefit when many I/O tasks are performed. We could use multithreading to achieve a similar effect. Instead, this template uses asyncio with explicit async/await syntax. 
 
 If your service doesn't perform many I/O tasks then there likely won't be any benefit from using asyncio. 
 
@@ -103,9 +103,9 @@ AWS lambda components can suffer from cold start times (~300ms with Python) so i
 
 This template is based on production services built for [covidlive.co.uk](https://www.covidlive.co.uk) by [@lfalcomerdawson](https://twitter.com/lfalcomerdawson) and [@geeogi](https://twitter.com/geeogi).
 
-## Contributing
+## Questions / Contributing / Bugs
 
-Please raise an issue. Thanks. 
+Issues welcome. Thanks. 
 
 ## License
 
