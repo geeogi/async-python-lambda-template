@@ -1,6 +1,6 @@
 # High-performance AWS lambda with async Python 
 
-_A template for building a Python function in AWS lambda using asyncio, aiohttp and aiobotocore. Perfect for a data processing pipeline._ 
+_A template for building a Python function in AWS lambda using asyncio, aiohttp and aiobotocore. A good fit for a data processing pipeline._ 
 
 ## Features
 
@@ -15,6 +15,10 @@ _A template for building a Python function in AWS lambda using asyncio, aiohttp 
 This template demonstrates how to build and test a lambda function which runs HTTP requests and AWS actions concurrently to achieve fast and cheap execution. The [src/](./src) directory contains two example scripts which scrape bitcoin news from online sources and publish aggregated documents to S3. The output of the scripts is simple but they demonstrate a pattern for concurrent Python using [asyncio](https://docs.python.org/3/library/asyncio.html), [aiohttp](https://docs.aiohttp.org/en/stable/) and [aiobotocore](https://github.com/aio-libs/aiobotocore). You can see an example of the documents produced by this lambda in the test [fixtures](./tests/fixtures/documents).
 
 This repository also includes a CloudFormation template which can be used to deploy the lambda and S3 infrastructure on AWS with appropriate IAM policies.
+
+## Should I use this template?
+
+This template is a good fit for any service that makes many HTTP requests or performs many AWS actions (e.g. S3, DynamoDB) such as a data scraping service or an aggregating service that needs to fetch or update many documents at a time. This template offers a quick-start with production ready and tested code. [Learn more](#Q&A).
 
 ## Setup
 
@@ -63,7 +67,7 @@ To provision the lambda and S3 infrastructure on AWS you'll need to visit the Cl
 
 > The lambda will be configured to run Python 3.7 since it's not yet possible to deploy Python 3.8+ via CloudFormation using the ZipFile property. If you need Python 3.8+ you can update your lambda through the AWS console after it's been created or reconfigure the lambda's Runtime and Code properties in the CloudFormation template. 
 
-## Deployment
+## Build and deploy
 
 To deploy the source code to the lambda component you'll need to zip the contents of the `src/` directory and include any 3rd party Python modules required in production. Run:
 
@@ -85,13 +89,13 @@ The simplest way to invoke a lambda function is by creating and [firing a test e
 
 ## Q&A
 
-#### Why use asynchronous Python? 
+#### Why use Asyncio? 
 
-Async Python code can speed up the execution time of a script by performing I/O concurrently. While a synchronous Python script will perform network requests one by one, an asynchronous Python script is able to handle multiple network requests at a time which can have a significant benefit when many requests are made – e.g. a data scraping/aggregating service. 
+Asyncio can speed up the execution time of a script by performing I/O concurrently. While a synchronous Python script will perform I/O tasks (e.g. network requests) one by one, a Python script written with asyncio can handle multiple I/O tasks at a time which can have a significant benefit when many I/O tasks are required.
 
-A similar effect can be achieved using multithreading but the concurrent pattern with asyncio is often easier to understand and reason about, especially with the explicit async/await syntax. 
+We could use multithreading to achieve a similar effect. Instead, this template uses asyncio with explicit async/await syntax. 
 
-If your script doesn't perform significant I/O then there likely won't be any benefit from using asynchronous code. 
+If your service doesn't perform many I/O tasks then there likely won't be any benefit from using asyncio. 
 
 #### Why use AWS lambda?
 
@@ -99,7 +103,9 @@ AWS lambda is a software environment that lets you run code without having to pr
 
 Lambdas are connected to the AWS ecosystem and can be configured to run on a schedule or be triggered by HTTP request or by another AWS event such as SNS message or S3 upload. Lambda comes with an interface for monitoring performance and editing the function code on the fly.
 
-With AWS Lambda you only pay for the execution time you consume so if your code is fast and efficient then it can often be cheaper to run than a traditional server instance.
+With AWS lambda you only pay for the execution time you consume so if your code is fast and efficient then it can be cheaper to run than a traditional server instance. 
+
+AWS lambda components can suffer from cold start times (~300ms with Python) so if your service needs very fast response times then you may require a dedicated server instance instead.
 
 ## Credit
 
